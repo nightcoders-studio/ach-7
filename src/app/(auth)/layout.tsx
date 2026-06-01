@@ -1,4 +1,4 @@
-import { Sprout } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 export default function AuthLayout({
@@ -21,10 +21,9 @@ export default function AuthLayout({
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
         </div>
         
-        {/* Logo/Brand */}
-        <Link href="/" className="relative z-10 flex items-center gap-2 w-max hover:opacity-90 transition-opacity">
-          <Sprout className="w-8 h-8 text-white" />
-          <span className="text-xl font-bold text-white tracking-tight">PanganTanyoe</span>
+        {/* Logo */}
+        <Link href="/" className="relative z-10 w-max hover:opacity-90 transition-opacity">
+          <Image src="/Logo.png" alt="PanganTanyoe" width={180} height={48} className="h-10 w-auto brightness-0 invert" priority />
         </Link>
 
         {/* Text at bottom */}

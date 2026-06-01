@@ -10,6 +10,10 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "PanganTanyoe — Pasar Petani Langsung ke Konsumen",
   description: "Platform pasar digital yang menghubungkan petani Aceh langsung ke konsumen, tanpa perantara.",
+  icons: {
+    icon: "/Logo.png",
+    apple: "/Logo.png",
+  },
 };
 
 export default function RootLayout({

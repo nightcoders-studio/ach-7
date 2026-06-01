@@ -35,10 +35,7 @@ export function LandingPage() {
         <nav className="mx-auto max-w-5xl rounded-full border border-slate-200/50 bg-white/70 backdrop-blur-xl shadow-sm pointer-events-auto">
           <div className="flex h-14 items-center justify-between px-4 sm:px-6">
             <div className="flex items-center gap-2">
-              <div className="bg-gradient-to-tr from-brand-green to-brand-orange p-1.5 rounded-full">
-                <Leaf className="h-4 w-4 text-white" strokeWidth={2.5} />
-              </div>
-              <span className="text-lg font-bold tracking-tight text-slate-900">PanganTanyoe</span>
+              <img src="/Logo.png" alt="PanganTanyoe" className="h-8 w-auto" />
             </div>
             <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-500">
               <Link href="#cara-kerja" className="hover:text-brand-green transition-colors">Cara Kerja</Link>
@@ -86,10 +83,7 @@ export function LandingPage() {
             >
               <div className="flex items-center justify-between p-6 border-b border-slate-100">
                 <div className="flex items-center gap-2">
-                  <div className="bg-gradient-to-tr from-brand-green to-brand-orange p-1.5 rounded-full">
-                    <Leaf className="h-4 w-4 text-white" strokeWidth={2.5} />
-                  </div>
-                  <span className="text-lg font-bold tracking-tight text-slate-900">PanganTanyoe</span>
+                  <img src="/Logo.png" alt="PanganTanyoe" className="h-8 w-auto" />
                 </div>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -333,10 +327,7 @@ export function LandingPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity">
-              <div className="bg-gradient-to-tr from-brand-green to-brand-orange p-1.5 rounded-lg">
-                <Leaf className="h-4 w-4 text-white" strokeWidth={2.5} />
-              </div>
-              <span className="font-bold tracking-tight text-slate-900">PanganTanyoe</span>
+              <img src="/Logo.png" alt="PanganTanyoe" className="h-8 w-auto" />
             </div>
             <p className="text-sm font-medium text-slate-500 text-center md:text-left">
               &copy; {new Date().getFullYear()} PanganTanyoe &mdash; Dukung petani lokal Aceh.
