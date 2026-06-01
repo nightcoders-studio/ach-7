@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let response = NextResponse.next({
     request: { headers: request.headers },
   })
@@ -29,10 +29,22 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  const isAuthPage = request.nextUrl.pathname.startsWith('/login') ||
-    request.nextUrl.pathname.startsWith('/register')
+  const pathname = request.nextUrl.pathname
 
-  if (!user && !isAuthPage) {
+  const isAuthPage =
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/register') ||
+    pathname.startsWith('/lupa-password') ||
+    pathname.startsWith('/reset-password')
+
+  const isPublicPath =
+    pathname.startsWith('/auth/callback') ||
+    pathname.startsWith('/auth/confirm') ||
+    pathname.startsWith('/auth/auth-code-error')
+
+  const isApiRoute = pathname.startsWith('/api')
+
+  if (!user && !isAuthPage && !isApiRoute && !isPublicPath) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)

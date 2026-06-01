@@ -35,11 +35,12 @@
 
 | # | Task | Detail | Status |
 |---|------|--------|--------|
-| 2.1 | Halaman Login | Form email + password, pilih role (konsumen/petani) | ⬜ |
-| 2.2 | Halaman Register Konsumen | Form nama, email, no_hp, alamat, password | ⬜ |
-| 2.3 | Halaman Register Petani | Form nama, email, no_hp, password → lanjut ke form data petani (KTP, alamat lahan, rekening) | ⬜ |
-| 2.4 | Middleware auth | Redirect ke login kalau belum login | ⬜ |
-| 2.5 | Role-based guard | Route protection: /petani/* → cuma petani bisa akses | ⬜ |
+| 2.1 | Halaman Login | Form email + password, link lupa password + daftar | ✅ |
+| 2.2 | Halaman Register Konsumen | Form nama, email, no_hp, password → API create-profile + insert Profile | ✅ |
+| 2.3 | Halaman Register Petani | Form lengkap (NIK, KTP, alamat lahan, rekening) → API create Profile + FarmerProfile + Wallet | ✅ |
+| 2.4 | Proxy.ts (ex-middleware) | Redirect ke login kalau belum login, biarkan kalau sudah | ✅ |
+| 2.5 | Forgot / Reset password | Lupa password → kirim email → reset password page | ✅ |
+| 2.6 | Auth callback route | Supabase callback handler | ✅ |
 
 ## Phase 3: Farmer Module (4-5 jam)
 
