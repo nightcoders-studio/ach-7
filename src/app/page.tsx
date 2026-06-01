@@ -3,30 +3,14 @@ import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
+import { LandingPage } from '@/components/landing-page'
+
 export default async function HomePage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-green-50 to-white px-4">
-        <div className="text-center space-y-6 max-w-md">
-          <div className="text-6xl">🌾</div>
-          <h1 className="text-4xl font-bold text-green-800">Aceh Fresh</h1>
-          <p className="text-lg text-gray-600">
-            Pasar digital petani Aceh. Beli hasil panen segar langsung dari petani, harga terbaik tanpa perantara.
-          </p>
-          <div className="flex gap-3 justify-center">
-            <Link href="/register" className="rounded-lg bg-green-700 px-6 py-3 text-white font-medium hover:bg-green-800">
-              Daftar Sekarang
-            </Link>
-            <Link href="/login" className="rounded-lg border border-green-700 px-6 py-3 text-green-700 font-medium hover:bg-green-50">
-              Masuk
-            </Link>
-          </div>
-        </div>
-      </div>
-    )
+    return <LandingPage />
   }
 
   const profile = await prisma.profile.findUnique({

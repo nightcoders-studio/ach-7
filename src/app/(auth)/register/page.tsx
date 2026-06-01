@@ -4,7 +4,7 @@ export default function RegisterChoicePage() {
   return (
     <div className="space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-green-800">Aceh Fresh</h1>
+        <h1 className="text-3xl font-bold text-green-800">PanganTanyoe</h1>
         <p className="text-gray-600">Daftar sebagai apa?</p>
       </div>
 

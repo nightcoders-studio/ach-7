@@ -25,7 +25,7 @@ export default async function PetaniLayout({ children }: { children: React.React
       <header className="bg-green-800 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-10 shadow">
         <div className="flex items-center gap-2">
           <span className="text-xl">🌾</span>
-          <span className="font-bold text-lg">Aceh Fresh</span>
+          <span className="font-bold text-lg">PanganTanyoe</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium hidden sm:inline">{profile.nama}</span>
