@@ -43,6 +43,7 @@ export function LandingPage() {
             <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-500">
               <Link href="#cara-kerja" className="hover:text-brand-green transition-colors">Cara Kerja</Link>
               <Link href="#testimoni" className="hover:text-brand-green transition-colors">Testimoni</Link>
+              <Link href="/belanja" className="hover:text-brand-green transition-colors">Belanja</Link>
               <Link href="/register?role=petani" className="hover:text-brand-green transition-colors">Mitra Petani</Link>
             </div>
             <div className="flex items-center gap-3">
@@ -100,6 +101,7 @@ export function LandingPage() {
               <div className="flex flex-col p-6 gap-6">
                 <Link onClick={() => setIsMobileMenuOpen(false)} href="#cara-kerja" className="text-lg font-medium text-slate-700 hover:text-brand-green transition-colors">Cara Kerja</Link>
                 <Link onClick={() => setIsMobileMenuOpen(false)} href="#testimoni" className="text-lg font-medium text-slate-700 hover:text-brand-green transition-colors">Testimoni</Link>
+                <Link onClick={() => setIsMobileMenuOpen(false)} href="/belanja" className="text-lg font-medium text-slate-700 hover:text-brand-green transition-colors">Belanja</Link>
                 <Link onClick={() => setIsMobileMenuOpen(false)} href="/register?role=petani" className="text-lg font-medium text-slate-700 hover:text-brand-green transition-colors">Mitra Petani</Link>
                 <hr className="border-slate-100" />
                 <Link onClick={() => setIsMobileMenuOpen(false)} href="/login" className="text-lg font-medium text-slate-700 hover:text-brand-orange transition-colors">Masuk</Link>

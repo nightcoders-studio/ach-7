@@ -42,10 +42,6 @@ export default async function HomePage() {
     )
   }
 
-  return (
-    <div className="p-6 max-w-lg mx-auto space-y-4">
-      <h1 className="text-2xl font-bold text-green-800">👋 Halo, {profile.nama}</h1>
-      <p className="text-gray-600">Jelajahi produk petani — fitur akan segera hadir.</p>
-    </div>
-  )
+  // Redirect KONSUMEN to Browse Produk
+  redirect('/belanja')
 }
