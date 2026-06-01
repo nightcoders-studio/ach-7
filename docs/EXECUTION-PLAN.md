@@ -46,13 +46,13 @@
 
 | # | Task | Detail | Status |
 |---|------|--------|--------|
-| 3.1 | Dashboard Petani | Ringkasan: saldo, pesanan baru hari ini, rating | ⬜ |
-| 3.2 | Input / Edit Stok | Form: nama produk, kategori, harga/kg, stok (kg), foto (upload ke Supabase Storage), deskripsi | ⬜ |
-| 3.3 | Daftar Produk Saya | List semua produk milik petani, toggle aktif/nonaktif | ⬜ |
-| 3.4 | Pesanan Masuk | List pesanan dengan status, tombol Terima / Tolak | ⬜ |
-| 3.5 | Detail Pesanan | Info pesanan + alamat konsumen + tombol "Tandai Dikirim" | ⬜ |
-| 3.6 | Saldo & Riwayat | Lihat saldo, riwayat transaksi masuk | ⬜ |
-| 3.7 | Tarik Dana | Form nominal, pilih rekening, submit → create withdraw request | ⬜ |
+| 3.1 | Dashboard Petani | Ringkasan: saldo, pesanan baru hari ini, rating | ✅ |
+| 3.2 | Input / Edit Stok | Form: nama produk, kategori, harga/kg, stok (kg), foto (URL), deskripsi | ✅ |
+| 3.3 | Daftar Produk Saya | List semua produk milik petani, toggle aktif/nonaktif | ✅ |
+| 3.4 | Pesanan Masuk | List pesanan dengan status, tombol Terima / Tolak | ✅ |
+| 3.5 | Detail Pesanan | Info pesanan + alamat konsumen + tombol "Tandai Dikirim" | ✅ |
+| 3.6 | Saldo & Riwayat | Lihat saldo, riwayat penarikan | ✅ |
+| 3.7 | Tarik Dana | Form nominal, submit → create withdraw request (kurangi saldo) | ✅ |
 
 ## Phase 4: Consumer Module (5-6 jam)
 
