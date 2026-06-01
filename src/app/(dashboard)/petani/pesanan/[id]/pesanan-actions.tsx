@@ -2,6 +2,7 @@
 
 import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 export default function PesananActions({ orderId, status }: { orderId: string; status: string }) {
   const [pending, startTransition] = useTransition()
@@ -16,7 +17,7 @@ export default function PesananActions({ orderId, status }: { orderId: string; s
       })
       if (!res.ok) {
         const data = await res.json()
-        alert(data.error || 'Gagal memproses pesanan')
+        toast.error(data.error || 'Gagal memproses pesanan')
         return
       }
       router.refresh()

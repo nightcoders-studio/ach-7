@@ -272,9 +272,9 @@ export function LandingPage() {
                         <Star key={star} className="h-4 w-4 fill-brand-orange text-brand-orange" />
                       ))}
                     </div>
-                    <blockquote className="text-slate-700 text-lg font-medium leading-relaxed mb-8">
-                      "{testimonial.quote}"
-                    </blockquote>
+                      <blockquote className="text-slate-700 text-lg font-medium leading-relaxed mb-8">
+                        &ldquo;{testimonial.quote}&rdquo;
+                      </blockquote>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="h-12 w-12 rounded-full bg-brand-green/20 flex items-center justify-center font-bold text-brand-green text-lg">

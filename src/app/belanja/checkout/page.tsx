@@ -52,7 +52,7 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Pro
 
   return (
     <CheckoutClient 
-      product={serializedProduct as any} 
+      product={serializedProduct} 
       initialAddress={initialAddress} 
     />
   )

@@ -20,21 +20,38 @@ export async function GET(request: NextRequest) {
       where.kategori = kategori as KategoriProduk
     }
 
-    const [products, total] = await Promise.all([
-      prisma.product.findMany({
-        where,
-        include: {
-          farmer: { select: { id: true, nama: true, foto: true } },
+    const products = await prisma.product.findMany({
+      where,
+      include: {
+        farmer: {
+          select: {
+            id: true, nama: true, foto: true,
+            _count: { select: { reviewsAsFarmer: true } },
+          },
         },
-        orderBy: { createdAt: 'desc' },
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      prisma.product.count({ where }),
-    ])
+      },
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * limit,
+      take: limit,
+    })
+
+    const farmerIds = [...new Set(products.map((p) => p.farmerId))]
+    const ratings = await prisma.review.groupBy({
+      by: ['farmerId'],
+      where: { farmerId: { in: farmerIds } },
+      _avg: { rating: true },
+    })
+    const ratingMap = Object.fromEntries(ratings.map((r) => [r.farmerId, Number(r._avg.rating)]))
+
+    const productsWithRating = products.map((p) => ({
+      ...p,
+      avgRating: ratingMap[p.farmerId] || null,
+    }))
+
+    const total = await prisma.product.count({ where })
 
     return NextResponse.json({
-      products,
+      products: productsWithRating,
       pagination: {
         page,
         limit,

@@ -23,6 +23,7 @@ type Product = {
   stok: number
   satuan: string
   foto: string | null
+  avgRating: number | null
   farmer: {
     id: string
     nama: string
@@ -79,11 +80,13 @@ export default function BelanjaClient({ isKonsumen }: { isKonsumen: boolean }) {
     }
   }, [debouncedSearch, kategori, page])
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     setPage(1)
     fetchProducts(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch, kategori])
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const loadMore = () => {
     fetchProducts(false)
@@ -216,7 +219,7 @@ export default function BelanjaClient({ isKonsumen }: { isKonsumen: boolean }) {
                     <span className="text-xs text-slate-600 font-medium truncate flex-1">{product.farmer.nama}</span>
                     <div className="flex items-center gap-0.5 text-amber-500 bg-amber-50 px-1.5 py-0.5 rounded text-[10px] font-bold">
                       <Star className="w-3 h-3 fill-amber-500" />
-                      4.9
+                      {product.avgRating ? product.avgRating.toFixed(1) : '—'}
                     </div>
                   </div>
 

@@ -12,7 +12,18 @@ import { Textarea } from '@/components/ui/textarea'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Input } from '@/components/ui/input'
 
-export default function CheckoutClient({ product, initialAddress }: { product: any, initialAddress: string }) {
+type CheckoutProduct = {
+  id: string
+  farmerId: string
+  namaProduk: string
+  hargaPerKg: number
+  foto: string | null
+  satuan: string
+  stok: number
+  farmer: { nama: string }
+}
+
+export default function CheckoutClient({ product, initialAddress }: { product: CheckoutProduct, initialAddress: string }) {
   const router = useRouter()
   const [qty, setQty] = useState(1)
   const [alamat, setAlamat] = useState(initialAddress || '')
@@ -61,7 +72,7 @@ export default function CheckoutClient({ product, initialAddress }: { product: a
       }
 
       toast.success('Pesanan berhasil dibuat!')
-      router.push('/belanja')
+      router.push(`/pesanan/${data.id}`)
     } catch (error: unknown) {
       toast.error(error instanceof Error ? error.message : 'Terjadi kesalahan')
     } finally {
