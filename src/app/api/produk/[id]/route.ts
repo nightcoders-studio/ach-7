@@ -4,36 +4,41 @@ import { NextResponse } from 'next/server'
 type RouteContext = { params: Promise<{ id: string }> }
 
 export async function GET(_request: Request, context: RouteContext) {
-  const { id } = await context.params
+  try {
+    const { id } = await context.params
 
-  const product = await prisma.product.findUnique({
-    where: { id },
-    include: {
-      farmer: {
-        select: {
-          id: true,
-          nama: true,
-          foto: true,
-          farmerProfile: { select: { alamatLahan: true } },
-          reviewsAsFarmer: { select: { rating: true } },
+    const product = await prisma.product.findUnique({
+      where: { id },
+      include: {
+        farmer: {
+          select: {
+            id: true,
+            nama: true,
+            foto: true,
+            farmerProfile: { select: { alamatLahan: true } },
+            reviewsAsFarmer: { select: { rating: true } },
+          },
         },
       },
-    },
-  })
+    })
 
-  if (!product) {
-    return NextResponse.json({ error: 'Produk tidak ditemukan' }, { status: 404 })
+    if (!product) {
+      return NextResponse.json({ error: 'Produk tidak ditemukan' }, { status: 404 })
+    }
+
+    const ratings = product.farmer.reviewsAsFarmer.map((r) => r.rating)
+    const avgRating = ratings.length > 0
+      ? ratings.reduce((a, b) => a + b, 0) / ratings.length
+      : null
+
+    const { reviewsAsFarmer, ...farmerInfo } = product.farmer
+
+    return NextResponse.json({
+      ...product,
+      farmer: { ...farmerInfo, avgRating, totalReview: ratings.length },
+    })
+  } catch (error) {
+    console.error('Product detail error:', error)
+    return NextResponse.json({ error: 'Gagal mengambil produk' }, { status: 500 })
   }
-
-  const ratings = product.farmer.reviewsAsFarmer.map((r) => r.rating)
-  const avgRating = ratings.length > 0
-    ? ratings.reduce((a, b) => a + b, 0) / ratings.length
-    : null
-
-  const { reviewsAsFarmer, ...farmerInfo } = product.farmer
-
-  return NextResponse.json({
-    ...product,
-    farmer: { ...farmerInfo, avgRating, totalReview: ratings.length },
-  })
 }

@@ -105,24 +105,29 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  const user = await getUser(request)
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  try {
+    const user = await getUser(request)
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const profile = await prisma.profile.findUnique({
-    where: { id: user.id },
-    select: { role: true },
-  })
-  if (profile?.role !== 'KONSUMEN') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    const profile = await prisma.profile.findUnique({
+      where: { id: user.id },
+      select: { role: true },
+    })
+    if (profile?.role !== 'KONSUMEN') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
-  const orders = await prisma.order.findMany({
-    where: { konsumenId: user.id },
-    include: {
-      farmer: { select: { id: true, nama: true, foto: true } },
-      items: { select: { productName: true, qty: true, subtotal: true } },
-      transaction: { select: { metodeBayar: true, statusPayment: true } },
-    },
-    orderBy: { createdAt: 'desc' },
-  })
+    const orders = await prisma.order.findMany({
+      where: { konsumenId: user.id },
+      include: {
+        farmer: { select: { id: true, nama: true, foto: true } },
+        items: { select: { productName: true, qty: true, subtotal: true } },
+        transaction: { select: { metodeBayar: true, statusPayment: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+    })
 
-  return NextResponse.json(orders)
+    return NextResponse.json(orders)
+  } catch (error) {
+    console.error('List orders error:', error)
+    return NextResponse.json({ error: 'Gagal mengambil pesanan' }, { status: 500 })
+  }
 }

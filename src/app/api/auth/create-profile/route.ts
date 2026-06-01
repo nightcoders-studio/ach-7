@@ -19,6 +19,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'User ID mismatch' }, { status: 403 })
     }
 
+    const existing = await prisma.profile.findUnique({ where: { id: user.id }, select: { id: true } })
+    if (existing) {
+      return NextResponse.json({ error: 'Profile sudah ada' }, { status: 409 })
+    }
+
     const profile = await prisma.profile.create({
       data: {
         id: user.id,
