@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌾 PanganTanyoe
+
+**PanganTanyoe** (_Pangan + Tanyoe_, Acehnese for "Our Food") is a digital marketplace connecting consumers directly with farmers in Aceh. Built for a hackathon project.
+
+## Features
+
+### 👨‍🌾 Farmer Module
+- Dashboard with balance, orders, and rating overview
+- Product management (add, edit, toggle active)
+- Incoming order management (accept, process, mark shipped)
+- Wallet & withdrawal requests
+
+### 🛍️ Consumer Module
+- Browse products with category filters and search
+- Product detail page with farmer info
+- **Public farmer profile** — photo, rating, location, WA contact, product grid
+- Checkout with address, shipping cost, and payment method
+- Order tracking timeline (Waiting → Processed → Shipped → Done)
+- Order confirmation on delivery
+- Rating & review (1–5 stars + comment)
+- Personal profile page with edit and spending stats
+
+### 🔐 Auth
+- Email/password login & registration
+- Separate registration flows for Konsumen and Petani
+- Password reset via email
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | [Next.js 16](https://nextjs.org) (App Router) |
+| Language | TypeScript |
+| Database | PostgreSQL (Supabase) |
+| ORM | [Prisma](https://prisma.io) v7 with `@prisma/adapter-pg` |
+| Auth | [Supabase Auth](https://supabase.com/auth) (SSR) |
+| Styling | [Tailwind CSS v4](https://tailwindcss.com) + shadcn/ui + Base UI |
+| Icons | [Lucide React](https://lucide.dev) |
+| Forms | shadcn/ui (Input, Textarea, Label, RadioGroup, Button) |
+| Notifications | [Sonner](https://sonner.emilkowal.ski) toast |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js >= 20
+- PostgreSQL database (Supabase recommended)
+- Supabase project
+
+### Environment Variables
+
+Create a `.env` file in the root:
+
+```env
+DATABASE_URL=postgresql://...
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Install & Run
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npx prisma generate
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open [http://localhost:3000](http://localhost:3000).
 
-## Learn More
+### Database
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npx prisma migrate dev --name init    # Apply migrations
+npx prisma generate                    # Regenerate client
+npx prisma studio                      # Open DB browser
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/
+│   ├── api/
+│   │   ├── auth/create-profile/       # Post-registration profile creation
+│   │   ├── pesanan/                   # Orders (list, create, detail, update)
+│   │   ├── petani/                    # Farmer public profile, products, saldo
+│   │   ├── produk/                    # Products list & detail
+│   │   ├── profile/                   # Consumer profile (GET & PATCH)
+│   │   └── review/                    # Create review
+│   ├── (auth)/                        # Login, register, forgot-password
+│   ├── (dashboard)/petani/            # Farmer dashboard & management
+│   ├── belanja/                       # Consumer: browse, product detail, checkout
+│   ├── pesanan/                       # Consumer: order list & detail
+│   ├── petani/profil/[id]             # Public farmer profile (consumer-facing)
+│   └── profil/                        # Consumer profile page
+├── components/ui/                     # shadcn/ui components
+├── lib/
+│   ├── prisma.ts                      # Prisma client singleton
+│   ├── supabase/                      # Supabase server & browser clients
+│   └── utils.ts                       # cn(), formatRupiah()
+└── generated/prisma/                  # Generated Prisma client
+```
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
