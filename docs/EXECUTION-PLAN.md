@@ -59,17 +59,18 @@
 | # | Task | Detail | Status |
 |---|------|--------|--------|
 | 4.1 | Landing Page (Guest) | Hero, cara kerja, tombol daftar/mulai | ✅ |
-| 4.2 | Beranda (Browse Produk) | API (GET /api/produk) ✅ — Grid produk, filter kategori, search | 🟡 UI |
-| 4.3 | Detail Produk | API (GET /api/produk/[id]) ✅ — Foto, harga, stok, profil petani | 🟡 UI |
-| 4.4 | Profil Petani | API (GET /api/petani/[id]) ✅ — Lihat profil + produk petani | 🟡 UI |
+| 4.2 | Beranda (Browse Produk) | Grid produk, filter kategori, search, infinite scroll | ✅ |
+| 4.3 | Detail Produk | Foto, harga, stok, profil petani, tombol beli langsung | ✅ |
+| 4.4 | Profil Petani Publik | Lihat profil + produk petani (API ✅ / UI ⬜) | 🟡 |
 | 4.5 | Keranjang | List item, edit qty, total, tombol checkout | ⬜ |
-| 4.6 | Checkout | API (POST /api/pesanan) ✅ — Alamat, ongkir, grand total, pilih bayar | 🟡 UI |
+| 4.6 | Checkout | Alamat, ongkir, grand total, pilih bayar, submit order | ✅ |
 | 4.7 | Pembayaran | Redirect ke Midtrans Snap / QRIS | ⬜ |
-| 4.8 | Status Pesanan | API (GET /api/pesanan/[id]) ✅ — Tracking: Menunggu → Selesai | 🟡 UI |
-| 4.9 | Riwayat Pesanan | API (GET /api/pesanan) ✅ — Semua pesanan konsumen | 🟡 UI |
-| 4.10 | Konfirmasi Terima + Rating | API (PATCH /api/pesanan/[id] + POST /api/review) ✅ — Tombol terima + bintang | 🟡 UI |
+| 4.8 | Status Pesanan | Tracking timeline: Menunggu → Selesai | ✅ |
+| 4.9 | Riwayat Pesanan | Daftar semua pesanan konsumen + filter status | ✅ |
+| 4.10 | Konfirmasi Terima + Rating | Tombol terima + bintang 1-5 + komentar | ✅ |
+| 4.11 | Profil Konsumen | Lihat/edit data diri, stats belanja, logout | ✅ |
 
-> **Legenda:** ✅ = selesai, 🟡 UI = API siap, tinggal frontend, ⬜ = belum sama sekali
+> **Legenda:** ✅ = selesai, 🟡 = API siap UI belum, ⬜ = belum sama sekali
 
 ## Phase 5: Payment & Rekber (3-4 jam)
 
@@ -110,7 +111,7 @@
 | Phase 1: Schema | 2-3 | Paling kritis, tentukan relasi data ✅ |
 | Phase 2: Auth | 3-4 | Bisa cepat pakai Supabase Auth ✅ |
 | Phase 3: Farmer | 4-5 | Paling penting — farmer adalah kunci ✅ |
-| Phase 4: Consumer | 5-6 | ✅ API selesai, 🟡 UI tersisa |
+| Phase 4: Consumer | 5-6 | ✅ 10/11 sub-fitur selesai |
 | Phase 5: Payment | 3-4 | Midtrans Snap cukup embed widget ⬜ |
 | Phase 6: Admin | 3-4 | Dashboard + verifikasi ⬜ |
 | Phase 7: Polish | 3-4 | Testing + bugfix ⬜ |
@@ -123,4 +124,4 @@
 2. Phase 3 (Farmer) dan Phase 4 (Consumer) bisa dikerjakan **paralel** oleh 2 orang berbeda.
 3. Testing tiap selesai satu fitur, jangan nunggu final.
 4. Kalau mentok di Midtrans, bisa ganti manual: konfirmasi via screenshot dulu (gaptek MVP).
-5. 🟡 UI = API sudah siap, tinggal suruh Gemini bikin frontend-nya.
+5. 🟡 = API sudah siap, tinggal frontend-nya.
