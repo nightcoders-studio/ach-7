@@ -228,6 +228,7 @@ export default function ProdukDetailClient({ productId, isKonsumen }: { productI
                     Masuk Keranjang
                   </Button>
                   <Button 
+                    onClick={() => router.push(`/belanja/checkout?productId=${product.id}`)}
                     className="flex-1 h-14 text-lg font-bold bg-brand-green hover:bg-brand-green/90 text-white rounded-xl shadow-lg shadow-brand-green/30 hover:shadow-xl hover:shadow-brand-green/40 transition-all hover:-translate-y-1" 
                     disabled={product.stok === 0}
                   >
@@ -237,7 +238,7 @@ export default function ProdukDetailClient({ productId, isKonsumen }: { productI
               ) : (
                 <Button 
                   className="w-full h-14 text-lg font-bold bg-slate-800 hover:bg-slate-900 text-white rounded-xl shadow-lg transition-all hover:-translate-y-1" 
-                  onClick={() => router.push('/login')}
+                  onClick={() => router.push(`/login?callbackUrl=/belanja/produk/${product.id}`)}
                 >
                   Login sebagai Konsumen untuk Membeli
                 </Button>
@@ -260,6 +261,7 @@ export default function ProdukDetailClient({ productId, isKonsumen }: { productI
               {isAdding ? <Loader2 className="w-6 h-6 animate-spin" /> : <ShoppingCart className="w-6 h-6" />}
             </Button>
             <Button 
+              onClick={() => router.push(`/belanja/checkout?productId=${product.id}`)}
               className="flex-[2] h-14 bg-brand-green hover:bg-brand-green/90 text-white font-bold text-lg rounded-xl shadow-lg shadow-brand-green/30" 
               disabled={product.stok === 0}
             >
@@ -269,7 +271,7 @@ export default function ProdukDetailClient({ productId, isKonsumen }: { productI
         ) : (
           <Button 
             className="w-full h-14 bg-slate-800 hover:bg-slate-900 text-white font-bold text-lg rounded-xl shadow-lg" 
-            onClick={() => router.push('/login')}
+            onClick={() => router.push(`/login?callbackUrl=/belanja/produk/${product.id}`)}
           >
             Login untuk Membeli
           </Button>
