@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { ArrowLeft, CheckCircle2, Wallet, Loader2, Send } from 'lucide-react'
 
 export default function TarikDanaPage() {
   const [nominal, setNominal] = useState('')
@@ -34,43 +34,100 @@ export default function TarikDanaPage() {
     setTimeout(() => {
       router.push('/petani/saldo')
       router.refresh()
-    }, 1500)
+    }, 2000)
   }
 
   if (success) {
     return (
-      <div className="space-y-6">
-        <div className="rounded-xl bg-white p-10 text-center shadow-sm border border-gray-100">
-          <p className="text-5xl mb-4">✅</p>
-          <h2 className="text-xl font-bold text-green-700 mb-2">Berhasil Diajukan!</h2>
-          <p className="text-gray-500">Penarikan dana sedang diproses admin.</p>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 animate-in zoom-in-95 duration-500">
+        <div className="relative">
+          <div className="absolute -inset-4 rounded-full bg-brand-green/20 animate-pulse"></div>
+          <div className="w-24 h-24 rounded-full bg-brand-green/10 flex items-center justify-center relative z-10">
+            <CheckCircle2 className="w-12 h-12 text-brand-green" />
+          </div>
+        </div>
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Berhasil Diajukan!</h2>
+          <p className="text-slate-500 max-w-sm">
+            Permintaan penarikan dana Anda sedang diproses oleh tim kami. Anda akan dialihkan sebentar lagi.
+          </p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-2">
-        <Link href="/petani/saldo" className="text-gray-500 hover:text-gray-700">← Kembali</Link>
-        <h1 className="text-2xl font-bold text-gray-800">Tarik Dana</h1>
+    <div className="max-w-xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Header */}
+      <div className="flex items-center gap-4">
+        <Link 
+          href="/petani/saldo" 
+          className="flex items-center justify-center w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-all shadow-sm"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
+        <div>
+          <h1 className="text-2xl font-bold text-slate-800 tracking-tight">Tarik Dana</h1>
+          <p className="text-sm text-slate-500">Tarik saldo penjualan Anda ke rekening terdaftar.</p>
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4 rounded-xl bg-white p-6 shadow-sm border border-gray-100">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Nominal Penarikan (Rp)</label>
-          <input type="number" value={nominal} onChange={(e) => setNominal(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-4 py-3 text-lg font-bold focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-            placeholder="50000" min={10000} step={10000} required />
-          <p className="text-xs text-gray-400 mt-1">Min. Rp 10.000</p>
+      {/* Form Card */}
+      <form onSubmit={handleSubmit} className="relative overflow-hidden rounded-2xl bg-white p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
+          <Wallet className="w-48 h-48 text-brand-green" />
         </div>
 
-        {error && <div className="rounded-md bg-red-50 p-3 text-sm text-red-600">{error}</div>}
+        <div className="relative z-10 space-y-8">
+          <div className="space-y-3">
+            <label className="block text-sm font-semibold text-slate-700">Nominal Penarikan</label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <span className="text-slate-500 font-bold text-lg">Rp</span>
+              </div>
+              <input 
+                type="number" 
+                value={nominal} 
+                onChange={(e) => setNominal(e.target.value)}
+                className="w-full rounded-xl border border-slate-300 pl-14 pr-4 py-4 text-xl font-bold text-slate-800 transition-all focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 focus:outline-none"
+                placeholder="50000" 
+                min={10000} 
+                step={10000} 
+                required 
+              />
+            </div>
+            <div className="flex items-center justify-between text-xs text-slate-500 px-1">
+              <span>Min. penarikan Rp 10.000</span>
+              <span>Kelipatan Rp 10.000</span>
+            </div>
+          </div>
 
-        <Button type="submit" disabled={loading}
-          className="w-full bg-green-700 hover:bg-green-800 text-white py-3 text-base">
-          {loading ? 'Memproses...' : 'Ajukan Penarikan'}
-        </Button>
+          <div className="pt-2">
+            {error && (
+              <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600 shadow-sm flex items-start">
+                <span className="block">{error}</span>
+              </div>
+            )}
+
+            <button 
+              type="submit" 
+              disabled={loading || !nominal || parseFloat(nominal) < 10000}
+              className="w-full flex items-center justify-center gap-2 bg-brand-green hover:bg-emerald-600 text-white font-semibold py-4 px-6 rounded-xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-70 disabled:hover:translate-y-0 disabled:shadow-none disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Memproses...
+                </>
+              ) : (
+                <>
+                  <Send className="w-5 h-5" />
+                  Ajukan Penarikan
+                </>
+              )}
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   )
