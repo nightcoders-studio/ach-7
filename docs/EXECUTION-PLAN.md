@@ -61,7 +61,7 @@
 | 4.1 | Landing Page (Guest) | Hero, cara kerja, tombol daftar/mulai | ✅ |
 | 4.2 | Beranda (Browse Produk) | Grid produk, filter kategori, search, infinite scroll | ✅ |
 | 4.3 | Detail Produk | Foto, harga, stok, profil petani, tombol beli langsung | ✅ |
-| 4.4 | Profil Petani Publik | Lihat profil + produk petani (API ✅ / UI ⬜) | 🟡 |
+| 4.4 | Profil Petani Publik | Lihat profil + produk petani, rating, hubungi WA | ✅ |
 | 4.5 | Keranjang | List item, edit qty, total, tombol checkout | ⬜ |
 | 4.6 | Checkout | Alamat, ongkir, grand total, pilih bayar, submit order | ✅ |
 | 4.7 | Pembayaran | Redirect ke Midtrans Snap / QRIS | ⬜ |
@@ -111,7 +111,7 @@
 | Phase 1: Schema | 2-3 | Paling kritis, tentukan relasi data ✅ |
 | Phase 2: Auth | 3-4 | Bisa cepat pakai Supabase Auth ✅ |
 | Phase 3: Farmer | 4-5 | Paling penting — farmer adalah kunci ✅ |
-| Phase 4: Consumer | 5-6 | ✅ 10/11 sub-fitur selesai |
+| Phase 4: Consumer | 5-6 | ✅ 11/11 sub-fitur selesai |
 | Phase 5: Payment | 3-4 | Midtrans Snap cukup embed widget ⬜ |
 | Phase 6: Admin | 3-4 | Dashboard + verifikasi ⬜ |
 | Phase 7: Polish | 3-4 | Testing + bugfix ⬜ |
