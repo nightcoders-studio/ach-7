@@ -96,7 +96,7 @@ export default function BelanjaClient({ isKonsumen }: { isKonsumen: boolean }) {
       <div className="bg-white px-4 pt-4 pb-4 sticky top-0 z-40 shadow-sm">
         <div className="max-w-5xl mx-auto space-y-4">
             <div className="flex items-center justify-between">
-              <img src="/Logo.png" alt="PanganTanyoe" className="h-8 w-auto" />
+              <img src="/Logo.png" alt="PanganTanyoe" className="h-10 w-auto" />
             {!isKonsumen && (
               <Link href="/login" className="text-sm font-medium text-brand-green bg-brand-green/10 px-4 py-1.5 rounded-full hover:bg-brand-green/20 transition-colors">
                 Masuk

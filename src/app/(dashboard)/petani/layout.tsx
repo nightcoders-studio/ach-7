@@ -26,7 +26,7 @@ export default async function PetaniLayout({ children }: { children: React.React
       {/* Top Header */}
       <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-20 shadow-sm">
         <div className="flex items-center gap-2">
-          <Image src="/Logo.png" alt="PanganTanyoe" width={130} height={32} className="h-8 w-auto" priority />
+          <Image src="/Logo.png" alt="PanganTanyoe" width={160} height={40} className="h-10 w-auto" priority />
         </div>
         <div className="flex items-center gap-3">
           <span className="text-sm font-semibold text-slate-700 hidden sm:inline">{profile.nama}</span>
