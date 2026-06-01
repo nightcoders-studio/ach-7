@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
+import { motion } from 'framer-motion'
+import { Sprout, User, Mail, Phone, Lock, ArrowLeft, CreditCard, Landmark, MapPin, BadgeInfo } from 'lucide-react'
 
 export default function RegisterPetaniPage() {
   const [form, setForm] = useState({
@@ -75,92 +77,149 @@ export default function RegisterPetaniPage() {
     router.push('/')
   }
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  }
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const } }
+  }
+
   return (
-    <div className="space-y-6">
-      <div className="text-center space-y-2">
-        <h1 className="text-2xl font-bold text-green-800">Daftar sebagai Petani</h1>
-        <p className="text-sm text-gray-600">Jual hasil panen langsung ke pembeli</p>
-      </div>
+    <motion.div variants={container} initial="hidden" animate="show" className="space-y-6">
+      <motion.div variants={item} className="relative text-center space-y-2">
+        <Link href="/register" className="absolute left-0 top-1/2 -translate-y-1/2 p-2 text-slate-400 hover:text-brand-orange transition-colors bg-slate-50 hover:bg-brand-orange/10 rounded-full">
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
+        <div className="inline-flex items-center justify-center p-3 bg-brand-orange/10 rounded-full mb-4">
+          <Sprout className="w-8 h-8 text-brand-orange" />
+        </div>
+        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Daftar sebagai Petani</h1>
+        <p className="text-sm text-slate-500">Jual hasil panen langsung ke pembeli</p>
+      </motion.div>
 
-      <form onSubmit={handleRegister} className="space-y-4">
-        <div className="rounded-lg bg-yellow-50 border border-yellow-200 p-3 text-sm text-yellow-800">
-          Data kamu akan diverifikasi oleh admin sebelum bisa menjual.
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-          <input type="text" value={form.nama} onChange={(e) => updateField('nama', e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-            placeholder="Nama sesuai KTP" required />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-          <input type="email" value={form.email} onChange={(e) => updateField('email', e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-            placeholder="nama@email.com" required />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">No. Handphone</label>
-          <input type="tel" value={form.noHp} onChange={(e) => updateField('noHp', e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-            placeholder="0812-xxxx-xxxx" required />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">NIK (Nomor Induk Kependudukan)</label>
-          <input type="text" value={form.nik} onChange={(e) => updateField('nik', e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-            placeholder="16 digit NIK" required />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Alamat Lahan / Sawah</label>
-          <textarea value={form.alamatLahan} onChange={(e) => updateField('alamatLahan', e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-            placeholder="Contoh: Gampong Lamreung, Kec. Simpang Tiga, Aceh Besar" rows={2} required />
+      <motion.form variants={item} onSubmit={handleRegister} className="space-y-4">
+        <div className="rounded-xl border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800 shadow-sm flex gap-3">
+          <BadgeInfo className="w-5 h-5 text-yellow-600 shrink-0" />
+          <p>Data kamu akan diverifikasi oleh admin sebelum bisa menjual hasil panen.</p>
         </div>
 
-        <div className="border-t pt-4">
-          <h3 className="text-sm font-semibold text-gray-700 mb-3">Data Rekening Pencairan</h3>
-          <div className="space-y-3">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Bank</label>
+        <div className="space-y-1.5">
+          <label className="block text-sm font-semibold text-slate-700">Nama Lengkap</label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <User className="h-5 w-5 text-slate-400" />
+            </div>
+            <input type="text" value={form.nama} onChange={(e) => updateField('nama', e.target.value)}
+              className="block w-full pl-10 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm transition-colors focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/20"
+              placeholder="Nama sesuai KTP" required />
+          </div>
+        </div>
+
+        <div className="space-y-1.5">
+          <label className="block text-sm font-semibold text-slate-700">Email</label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Mail className="h-5 w-5 text-slate-400" />
+            </div>
+            <input type="email" value={form.email} onChange={(e) => updateField('email', e.target.value)}
+              className="block w-full pl-10 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm transition-colors focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/20"
+              placeholder="nama@email.com" required />
+          </div>
+        </div>
+
+        <div className="space-y-1.5">
+          <label className="block text-sm font-semibold text-slate-700">No. Handphone</label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Phone className="h-5 w-5 text-slate-400" />
+            </div>
+            <input type="tel" value={form.noHp} onChange={(e) => updateField('noHp', e.target.value)}
+              className="block w-full pl-10 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm transition-colors focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/20"
+              placeholder="0812-xxxx-xxxx" required />
+          </div>
+        </div>
+
+        <div className="space-y-1.5">
+          <label className="block text-sm font-semibold text-slate-700">NIK</label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <CreditCard className="h-5 w-5 text-slate-400" />
+            </div>
+            <input type="text" value={form.nik} onChange={(e) => updateField('nik', e.target.value)}
+              className="block w-full pl-10 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm transition-colors focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/20"
+              placeholder="16 digit Nomor Induk Kependudukan" required />
+          </div>
+        </div>
+
+        <div className="space-y-1.5">
+          <label className="block text-sm font-semibold text-slate-700">Alamat Lahan / Sawah</label>
+          <div className="relative">
+            <div className="absolute top-3 left-3 flex items-start pointer-events-none">
+              <MapPin className="h-5 w-5 text-slate-400" />
+            </div>
+            <textarea value={form.alamatLahan} onChange={(e) => updateField('alamatLahan', e.target.value)}
+              className="block w-full pl-10 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm transition-colors focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/20 min-h-[80px]"
+              placeholder="Contoh: Gampong Lamreung, Kec. Simpang Tiga, Aceh Besar" required />
+          </div>
+        </div>
+
+        <div className="pt-4 mt-6 border-t border-slate-100">
+          <h3 className="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <Landmark className="w-4 h-4 text-brand-orange" />
+            Data Rekening Pencairan
+          </h3>
+          <div className="space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold text-slate-600">Bank</label>
               <input type="text" value={form.rekeningBank} onChange={(e) => updateField('rekeningBank', e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+                className="block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm transition-colors focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/20"
                 placeholder="Contoh: BRI, BSI, Mandiri" required />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">No. Rekening</label>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold text-slate-600">No. Rekening</label>
               <input type="text" value={form.noRekening} onChange={(e) => updateField('noRekening', e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+                className="block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm transition-colors focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/20"
                 placeholder="Nomor rekening" required />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nama Pemilik Rekening</label>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold text-slate-600">Nama Pemilik Rekening</label>
               <input type="text" value={form.namaPemilikRekening} onChange={(e) => updateField('namaPemilikRekening', e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+                className="block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm transition-colors focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/20"
                 placeholder="Nama sesuai rekening" required />
             </div>
           </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Kata Sandi</label>
-          <input type="password" value={form.password} onChange={(e) => updateField('password', e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-            placeholder="Min. 6 karakter" minLength={6} required />
+        <div className="space-y-1.5 pt-2">
+          <label className="block text-sm font-semibold text-slate-700">Kata Sandi</label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Lock className="h-5 w-5 text-slate-400" />
+            </div>
+            <input type="password" value={form.password} onChange={(e) => updateField('password', e.target.value)}
+              className="block w-full pl-10 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm transition-colors focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/20"
+              placeholder="Min. 6 karakter" minLength={6} required />
+          </div>
         </div>
 
-        {error && <div className="rounded-md bg-red-50 p-3 text-sm text-red-600">{error}</div>}
+        {error && <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600 shadow-sm">{error}</div>}
 
         <Button type="submit" disabled={loading}
-          className="w-full bg-green-700 hover:bg-green-800 text-white py-2.5 text-base">
+          className="w-full bg-gradient-to-r from-brand-orange to-brand-green hover:opacity-90 transition-opacity text-white py-6 text-base font-semibold rounded-xl shadow-lg shadow-brand-orange/20 mt-4">
           {loading ? 'Memproses...' : 'Daftar sebagai Petani'}
         </Button>
-      </form>
+      </motion.form>
 
-      <p className="text-center text-sm text-gray-500">
+      <motion.p variants={item} className="text-center text-sm text-slate-500">
         Sudah punya akun?{' '}
-        <Link href="/login" className="text-green-600 hover:text-green-700 font-medium">Masuk</Link>
-      </p>
-    </div>
+        <Link href="/login" className="text-brand-orange hover:text-brand-orange/80 font-semibold transition-colors">Masuk Sekarang</Link>
+      </motion.p>
+    </motion.div>
   )
 }
