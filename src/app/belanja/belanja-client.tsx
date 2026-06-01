@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { Search, MapPin, Star, ShoppingCart, User, Home, ListOrdered, Leaf, ChevronRight, LayoutGrid, AlertCircle, ShoppingBag, Loader2 } from 'lucide-react'
+import { Search, MapPin, Star, ShoppingCart, User, Home, ListOrdered, ChevronRight, LayoutGrid, AlertCircle, ShoppingBag, Loader2 } from 'lucide-react'
 import { useDebounce } from '@/hooks/use-debounce'
 
 const CATEGORIES = [
@@ -95,13 +95,8 @@ export default function BelanjaClient({ isKonsumen }: { isKonsumen: boolean }) {
       {/* Header & Hero */}
       <div className="bg-white px-4 pt-4 pb-4 sticky top-0 z-40 shadow-sm">
         <div className="max-w-5xl mx-auto space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="bg-gradient-to-tr from-brand-green to-brand-orange p-1.5 rounded-full shadow-sm">
-                <Leaf className="h-4 w-4 text-white" strokeWidth={2.5} />
-              </div>
-              <span className="text-xl font-bold tracking-tight text-slate-900">Belanja</span>
-            </div>
+            <div className="flex items-center justify-between">
+              <img src="/Logo.png" alt="PanganTanyoe" className="h-8 w-auto" />
             {!isKonsumen && (
               <Link href="/login" className="text-sm font-medium text-brand-green bg-brand-green/10 px-4 py-1.5 rounded-full hover:bg-brand-green/20 transition-colors">
                 Masuk

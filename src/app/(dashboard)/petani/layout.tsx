@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 import PetaniNav from './petani-nav'
-import { Sprout } from 'lucide-react'
+import Image from 'next/image'
 
 export default async function PetaniLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -25,11 +25,8 @@ export default async function PetaniLayout({ children }: { children: React.React
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       {/* Top Header */}
       <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-20 shadow-sm">
-        <div className="flex items-center gap-2.5">
-          <div className="bg-brand-green/10 p-2 rounded-xl">
-            <Sprout className="w-6 h-6 text-brand-green" />
-          </div>
-          <span className="font-bold text-xl text-slate-800 tracking-tight">PanganTanyoe</span>
+        <div className="flex items-center gap-2">
+          <Image src="/Logo.png" alt="PanganTanyoe" width={130} height={32} className="h-8 w-auto" priority />
         </div>
         <div className="flex items-center gap-3">
           <span className="text-sm font-semibold text-slate-700 hidden sm:inline">{profile.nama}</span>
