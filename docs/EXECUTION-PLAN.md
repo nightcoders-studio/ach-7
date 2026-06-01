@@ -20,16 +20,16 @@
 
 | # | Task | Detail | Status |
 |---|------|--------|--------|
-| 1.1 | Schema: User + Profile | Tabel: users (auth) + profiles (nama, role, alamat, foto, no_hp, lokasi) | ⬜ |
-| 1.2 | Schema: Farmer Profile | Tabel: farmer_profiles (user_id, nama_lengkap, nik, foto_ktp, alamat_lahan, status_verifikasi, rekening_bank, no_rekening) | ⬜ |
-| 1.3 | Schema: Product | Tabel: products (id, farmer_id, nama_produk, kategori, harga_per_kg, stok, satuan, foto, deskripsi, is_active) | ⬜ |
-| 1.4 | Schema: Order | Tabel: orders (id, konsumen_id, farmer_id, status, total_harga, ongkir, grand_total, catatan, created_at) | ⬜ |
-| 1.5 | Schema: Order Item | Tabel: order_items (id, order_id, product_id, qty, harga_satuan, subtotal) | ⬜ |
-| 1.6 | Schema: Transaction | Tabel: transactions (id, order_id, metode_bayar, status_payment, payment_gateway_ref, paid_at) | ⬜ |
-| 1.7 | Schema: Wallet | Tabel: wallets (farmer_id, saldo), withdraw_requests (id, farmer_id, nominal, status, rekening_tujuan, created_at) | ⬜ |
-| 1.8 | Schema: Review | Tabel: reviews (id, order_id, konsumen_id, farmer_id, rating, komentar, created_at) | ⬜ |
-| 1.9 | Schema: Dispute | Tabel: disputes (id, order_id, alasan, status, putusan, created_at) | ⬜ |
-| 1.10 | Run migration | `npx prisma migrate dev --name init` | ⬜ |
+| 1.1 | Schema: Profile | Tabel: profiles (nama, role, alamat, foto, no_hp, lokasi) — extend dari Supabase Auth | ✅ |
+| 1.2 | Schema: Farmer Profile | Tabel: farmer_profiles (nik, ktp, alamat_lahan, verifikasi, rekening) | ✅ |
+| 1.3 | Schema: Product | Tabel: products (nama, kategori, harga, stok, foto, deskripsi) | ✅ |
+| 1.4 | Schema: Order | Tabel: orders (konsumen, petani, status, total, ongkir, grand_total) | ✅ |
+| 1.5 | Schema: Order Item | Tabel: order_items (snapshot nama produk, qty, harga, subtotal) | ✅ |
+| 1.6 | Schema: Transaction | Tabel: transactions (metode bayar, status, snap token, ref) | ✅ |
+| 1.7 | Schema: Wallet + Withdraw | Tabel: wallets (saldo per petani) + withdraw_requests | ✅ |
+| 1.8 | Schema: Review | Tabel: reviews (rating 1-5, komentar) | ✅ |
+| 1.9 | Schema: Dispute | Tabel: disputes (alasan, status, putusan) | ✅ |
+| 1.10 | Run migration + generate client | `npx prisma migrate dev --name init` + generate | ✅ |
 
 ## Phase 2: Auth Module (3-4 jam)
 

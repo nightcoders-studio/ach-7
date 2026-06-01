@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -10,4 +5,237 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+enum Role {
+  KONSUMEN
+  PETANI
+  ADMIN
+}
+
+enum VerifikasiStatus {
+  MENUNGGU
+  TERVERIFIKASI
+  DITOLAK
+}
+
+enum KategoriProduk {
+  SAYUR
+  BUAH
+  BERAS
+  CABAI
+  BAWANG
+  LAINNYA
+}
+
+enum OrderStatus {
+  MENUNGGU
+  DIPROSES
+  DIKIRIM
+  SELESAI
+  DIBATALKAN
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUND
+}
+
+enum MetodeBayar {
+  TRANSFER
+  QRIS
+}
+
+enum WithdrawStatus {
+  MENUNGGU
+  DIPROSES
+  SELESAI
+  DITOLAK
+}
+
+enum DisputeStatus {
+  DIBUKA
+  DIPROSES
+  SELESAI
+}
+
+enum Putusan {
+  REFUND_PENUH
+  CAIR_PETANI
+  REFUND_SEBAGIAN
+}
+
+model Profile {
+  id        String   @id @default(uuid())
+  role      Role     @default(KONSUMEN)
+  nama      String
+  email     String?  @unique
+  no_hp     String?
+  foto      String?
+  alamat    String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  farmerProfile    FarmerProfile?
+  products         Product[]
+  ordersAsKonsumen Order[]       @relation("KonsumenOrders")
+  ordersAsFarmer   Order[]       @relation("FarmerOrders")
+  reviewsAsKonsumen Review[]     @relation("KonsumenReviews")
+  reviewsAsFarmer   Review[]     @relation("FarmerReviews")
+  wallet           Wallet?
+  withdrawRequests WithdrawRequest[]
+
+  @@map("profiles")
+}
+
+model FarmerProfile {
+  id                String           @id @default(uuid())
+  profileId         String           @unique @map("profile_id")
+  nik               String
+  fotoKtp           String           @map("foto_ktp")
+  alamatLahan       String           @map("alamat_lahan")
+  statusVerifikasi  VerifikasiStatus @default(MENUNGGU) @map("status_verifikasi")
+  rekeningBank      String           @map("rekening_bank")
+  noRekening        String           @map("no_rekening")
+  namaPemilikRekening String         @map("nama_pemilik_rekening")
+  createdAt         DateTime         @default(now()) @map("created_at")
+  updatedAt         DateTime         @updatedAt @map("updated_at")
+
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@map("farmer_profiles")
+}
+
+model Product {
+  id          String        @id @default(uuid())
+  farmerId    String        @map("farmer_id")
+  namaProduk  String        @map("nama_produk")
+  kategori    KategoriProduk
+  hargaPerKg  Decimal       @map("harga_per_kg") @db.Decimal(12, 2)
+  stok        Int
+  satuan      String        @default("kg")
+  foto        String?
+  deskripsi   String?
+  isActive    Boolean       @default(true) @map("is_active")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  farmer      Profile       @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  orderItems  OrderItem[]
+
+  @@map("products")
+}
+
+model Order {
+  id                String      @id @default(uuid())
+  konsumenId        String      @map("konsumen_id")
+  farmerId          String      @map("farmer_id")
+  status            OrderStatus @default(MENUNGGU)
+  totalHarga        Decimal     @map("total_harga") @db.Decimal(12, 2)
+  ongkir            Decimal     @default(0) @db.Decimal(12, 2)
+  grandTotal        Decimal     @map("grand_total") @db.Decimal(12, 2)
+  catatan           String?
+  alamatPengiriman  String      @map("alamat_pengiriman")
+  latitude          Float?
+  longitude         Float?
+  createdAt         DateTime    @default(now()) @map("created_at")
+  updatedAt         DateTime    @updatedAt @map("updated_at")
+
+  konsumen   Profile     @relation("KonsumenOrders", fields: [konsumenId], references: [id])
+  farmer     Profile     @relation("FarmerOrders", fields: [farmerId], references: [id])
+  items      OrderItem[]
+  transaction Transaction?
+  review     Review?
+  dispute    Dispute?
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id            String  @id @default(uuid())
+  orderId       String  @map("order_id")
+  productId     String  @map("product_id")
+  productName   String  @map("product_name")
+  qty           Int
+  hargaSatuan   Decimal @map("harga_satuan") @db.Decimal(12, 2)
+  subtotal      Decimal @db.Decimal(12, 2)
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model Transaction {
+  id                String        @id @default(uuid())
+  orderId           String        @unique @map("order_id")
+  metodeBayar       MetodeBayar   @map("metode_bayar")
+  statusPayment     PaymentStatus @default(PENDING) @map("status_payment")
+  snapToken         String?       @map("snap_token")
+  paymentGatewayRef String?       @map("payment_gateway_ref")
+  paidAt            DateTime?     @map("paid_at")
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @updatedAt @map("updated_at")
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("transactions")
+}
+
+model Wallet {
+  id        String   @id @default(uuid())
+  farmerId  String   @unique @map("farmer_id")
+  saldo     Decimal  @default(0) @db.Decimal(12, 2)
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  farmer Profile @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+
+  @@map("wallets")
+}
+
+model WithdrawRequest {
+  id              String         @id @default(uuid())
+  farmerId        String         @map("farmer_id")
+  nominal         Decimal        @db.Decimal(12, 2)
+  status          WithdrawStatus @default(MENUNGGU)
+  rekeningBank    String         @map("rekening_bank")
+  noRekening      String         @map("no_rekening")
+  createdAt       DateTime       @default(now()) @map("created_at")
+  updatedAt       DateTime       @updatedAt @map("updated_at")
+
+  farmer Profile @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+
+  @@map("withdraw_requests")
+}
+
+model Review {
+  id          String   @id @default(uuid())
+  orderId     String   @unique @map("order_id")
+  konsumenId  String   @map("konsumen_id")
+  farmerId    String   @map("farmer_id")
+  rating      Int
+  komentar    String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  konsumen Profile @relation("KonsumenReviews", fields: [konsumenId], references: [id])
+  farmer   Profile @relation("FarmerReviews", fields: [farmerId], references: [id])
+
+  @@map("reviews")
+}
+
+model Dispute {
+  id        String        @id @default(uuid())
+  orderId   String        @unique @map("order_id")
+  alasan    String
+  status    DisputeStatus @default(DIBUKA)
+  putusan   Putusan?
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @updatedAt @map("updated_at")
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("disputes")
 }
