@@ -3,11 +3,12 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { ArrowLeft, Store, MapPin, Phone, CreditCard, Clock, CheckCircle2, Circle, Package, Truck, XCircle, Loader2, ChevronRight, AlertTriangle } from 'lucide-react'
+import { ArrowLeft, Store, MapPin, Phone, CreditCard, Clock, CheckCircle2, Circle, Package, Truck, XCircle, Loader2, ChevronRight, AlertTriangle, Star, MessageSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { formatRupiah } from '@/lib/utils'
 import { toast } from 'sonner'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Textarea } from '@/components/ui/textarea'
 
 type OrderItem = {
   id: string
@@ -63,6 +64,10 @@ export default function PesananDetailClient({ orderId }: { orderId: string }) {
   const [order, setOrder] = useState<OrderDetail | null>(null)
   const [loading, setLoading] = useState(true)
   const [actionLoading, setActionLoading] = useState<string | null>(null)
+  const [rating, setRating] = useState(0)
+  const [hoverRating, setHoverRating] = useState(0)
+  const [komentar, setKomentar] = useState('')
+  const [submittingReview, setSubmittingReview] = useState(false)
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -104,6 +109,35 @@ export default function PesananDetailClient({ orderId }: { orderId: string }) {
       toast.error(error instanceof Error ? error.message : 'Terjadi kesalahan')
     } finally {
       setActionLoading(null)
+    }
+  }
+
+  const handleSubmitReview = async () => {
+    if (rating === 0) {
+      toast.error('Pilih rating terlebih dahulu')
+      return
+    }
+
+    setSubmittingReview(true)
+    try {
+      const res = await fetch('/api/review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, rating, komentar: komentar || undefined }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Gagal menyimpan review')
+      }
+
+      toast.success('Review berhasil dikirim!')
+      setOrder((prev) => prev ? { ...prev, review: data } : prev)
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : 'Terjadi kesalahan')
+    } finally {
+      setSubmittingReview(false)
     }
   }
 
@@ -321,12 +355,111 @@ export default function PesananDetailClient({ orderId }: { orderId: string }) {
           </Button>
         )}
 
-        {order.status === 'SELESAI' && (
-          <div className="text-center py-4">
-            <div className="inline-flex items-center gap-2 text-emerald-600 font-bold bg-emerald-50 border border-emerald-200 rounded-2xl px-6 py-4">
-              <CheckCircle2 className="w-6 h-6" />
-              Pesanan sudah diterima. Terima kasih sudah berbelanja!
+        {/* Rating */}
+        {order.status === 'SELESAI' && !order.review && (
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-5">
+            <div className="text-center">
+              <div className="w-14 h-14 rounded-full bg-brand-green/10 flex items-center justify-center mx-auto mb-3">
+                <Star className="w-7 h-7 text-brand-green" />
+              </div>
+              <h2 className="text-xl font-bold text-slate-900 mb-1">Beri Nilai Petani</h2>
+              <p className="text-sm text-slate-500">Bagaimana pengalaman belanjamu dari <span className="font-semibold text-slate-700">{order.farmer.nama}</span>?</p>
             </div>
+
+            {/* Star Selector */}
+            <div className="flex justify-center gap-2">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  onClick={() => setRating(star)}
+                  onMouseEnter={() => setHoverRating(star)}
+                  onMouseLeave={() => setHoverRating(0)}
+                  className="p-1 transition-all duration-150 hover:scale-110 active:scale-95"
+                >
+                  <Star
+                    className={`w-10 h-10 transition-all duration-150 ${
+                      star <= (hoverRating || rating)
+                        ? 'text-amber-400 fill-amber-400 drop-shadow-sm'
+                        : 'text-slate-200 fill-slate-200'
+                    }`}
+                  />
+                </button>
+              ))}
+            </div>
+
+            {rating > 0 && (
+              <p className="text-center text-sm font-medium text-slate-600">
+                {rating === 1 && 'Sangat Tidak Puas'}
+                {rating === 2 && 'Tidak Puas'}
+                {rating === 3 && 'Cukup Puas'}
+                {rating === 4 && 'Puas'}
+                {rating === 5 && 'Sangat Puas'}
+              </p>
+            )}
+
+            {/* Comment */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                <MessageSquare className="w-4 h-4 text-slate-400" />
+                Komentar (opsional)
+              </label>
+              <Textarea
+                placeholder="Ceritakan pengalaman belanjamu..."
+                value={komentar}
+                onChange={(e) => setKomentar(e.target.value)}
+                className="bg-slate-50 focus:bg-white transition-colors min-h-[100px]"
+              />
+            </div>
+
+            <Button
+              onClick={handleSubmitReview}
+              disabled={submittingReview}
+              className="w-full h-13 bg-brand-green hover:bg-brand-green/90 text-white font-bold text-lg rounded-2xl shadow-lg shadow-brand-green/30 transition-all hover:-translate-y-1"
+            >
+              {submittingReview ? (
+                <Loader2 className="w-5 h-5 animate-spin mr-2" />
+              ) : (
+                <Star className="w-5 h-5 mr-2 fill-white" />
+              )}
+              Kirim Penilaian
+            </Button>
+          </div>
+        )}
+
+        {/* Existing Review */}
+        {order.status === 'SELESAI' && order.review && (
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-4">
+            <div className="text-center">
+              <div className="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-3">
+                <Star className="w-7 h-7 text-amber-500 fill-amber-500" />
+              </div>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Penilaian Kamu</h2>
+            </div>
+
+            {/* Read-only Stars */}
+            <div className="flex justify-center gap-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  className={`w-8 h-8 ${
+                    star <= order.review!.rating
+                      ? 'text-amber-400 fill-amber-400'
+                      : 'text-slate-200 fill-slate-200'
+                  }`}
+                />
+              ))}
+            </div>
+
+            {order.review.komentar && (
+              <div className="bg-slate-50 rounded-xl p-4 text-sm text-slate-700 leading-relaxed">
+                &ldquo;{order.review.komentar}&rdquo;
+              </div>
+            )}
+
+            <p className="text-center text-xs text-slate-400">
+              Terima kasih atas penilaianmu!
+            </p>
           </div>
         )}
 
